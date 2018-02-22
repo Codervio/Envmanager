@@ -22,10 +22,14 @@
         "phpunit/phpunit": "4.5.*"
     },
     "autoload": {
-        "psr-4": { "Codervio\\Envmanager\\": "" },
-        "exclude-from-classmap": [
-            "/Tests/"
-        ]
+        "psr-4": {
+            "Codervio\\Envmanager\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Codervio\\Envmanager\\": "test/"
+        }
     },
     "minimum-stability": "dev",
     "extra": {

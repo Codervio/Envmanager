@@ -41,5 +41,3 @@ __See TOC in `docs` directory__
 ### Enveditor
 
 ### TODO
-
-https://github.com/josegonzalez/php-dotenv
