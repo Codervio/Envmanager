@@ -27,7 +27,6 @@
             "/Tests/"
         ]
     },
-    "target-dir": "Codervio/Envmanager",
     "minimum-stability": "dev",
     "extra": {
         "branch-alias": {
