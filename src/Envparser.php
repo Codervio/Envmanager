@@ -72,7 +72,10 @@ class Envparser
 
         if ($this->loader->getLoadStatus()) {
             $this->context = $this->parseEncoding($this->loader->run());
+            return true;
         }
+
+        return false;
     }
 
     private function getParsed() : ParserCollector
