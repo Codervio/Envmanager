@@ -11,12 +11,12 @@ The `Envmanager` package provides parsing and editing dot env variables from .en
 
 PHP version requirements: _PHP >5.3_
 
-Add `use Codervio\Envmanager\Envmanager` declaration for parse .env file.
+Add `use Codervio\Envmanager\Envparser` declaration for parse .env file.
 
 Parse env varibles:
 
 ```php
-use Codervio\Envmanager\Envmanager;
+use Codervio\Envmanager\Envparser;
 
 
 ```
@@ -29,7 +29,7 @@ Status of core:
 | ------------- |:-------------------- |
 | `1.0`         | Release version      |
 
-PHP version above `5.3`.
+PHP version above `7.0`.
 Quality assurance: Unit tests provided
 
 ## Table of Contents

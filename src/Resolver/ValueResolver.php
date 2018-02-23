@@ -2,8 +2,8 @@
 
 namespace Codervio\Envmanager\Resolver;
 
-use ValueResolverInterface;
-use AbstractResolver;
+use Codervio\Envmanager\Resolver\AbstractResolver;
+use Codervio\Envmanager\Resolver\ValueResolverInterface;
 use Codervio\Envmanager\Exceptions\ValueException;
 
 class ValueResolver extends AbstractResolver implements ValueResolverInterface
