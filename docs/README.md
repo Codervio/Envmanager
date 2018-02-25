@@ -4,11 +4,12 @@ The `Environment manager` parse, populates dot environment files to super global
 
 It provides for editing environment file and manipulate them.
 
+![Screenshot](https://github.com/Codervio/Envmanager/raw/master/screenshot.png "Screenshot")
+
 ## Installation
 
-1. Installation via [Composer](http://www.composer.org) on [Packagist](http://www.packagist.com)
+1. Installation via [Composer](http://www.composer.org) on [Packagist](https://packagist.org/packages/codervio/envmanager)
 2. Installation using [Git](http://www.github.com) GIT clone component
-
 
 ## Prerequisities
 
@@ -33,7 +34,7 @@ After loading instance it can be fetching a variable:
 ```php
 use Codervio\Envmanager\Envparser;
 
-$envparser = new Envparser;
+$envparser = new Envparser('.env');
 $envparser->load();
 $envparser->run();
 
@@ -80,8 +81,80 @@ Quality assurance: Unit tests provided
 
 ## Table of Contents
 
-### EnvParser
+### Envparser
 
+#### Examples
+
+* For loading simple ENV variables use [`example`](getvalue.md)
+
+```text
+FOO=bar
+VAREMPTY=
+FOO1=foo1
+WITHSPACES="with spaces"
+```
+
+* Lists of examples env variables: [`lists`](lists.md)
+
+* Writing comments: [`comments`](comments.md)
+
+```shell
+# comment
+# a comment #comment
+## A main comment ##
+FOO=bar # a comment
+```
+
+It is possible to parse comments variables such using:
+
+```php
+ new Envparser('main.env', true);
+```
+
+A variable inside comment can be visible
+
+```shell 
+ #COM1=BAR1
+```
+
+using command:
+
+```php
+ $envparser->getAllValues(); # to get all values
+ $envparser->getValue('#COM1'); # to get commented key
+```
+
+which returns as array and keeps # mark:
+
+```shell
+  ["#COM1"]=>
+  string(4) "BAR1"
+```
+
+or directly:
+
+```php
+ $envparser->getValue('#COM1');
+```
+
+will parsing a variable
+
+```shell
+  string(4) "BAR1"
+```
+
+* Parsing export or setenv variables: [`envexports`](envexports.md)
+
+```shell
+setenv FOO1=value
+export FOO2=value
+```
+
+#### References
+
+* [`Envparser()`](envparser.md) - A construct parser constructor
 * [`load()`](load.md) - Load an environment .env  file or folder with .env files
+* [`getValue()`](getvalue.md) - Get a value from system environment variables
+* [`getAllValues()`](getallvalues.md) - Returns parsed environment variables internally as array
 
 ### EnvEditor

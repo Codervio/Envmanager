@@ -31,10 +31,15 @@ class ValueResolver extends AbstractResolver implements ValueResolverInterface
         $result = $this->checkSurroundingStripes($result);
 
         /**
+         * Trim empty '' or ""
+         */
+        $result = $this->trimEmpty($result);
+
+        /**
          * Remove "" and ''
          * Fix it on TK3 crashed
          */
-        //$result = $this->trimClosers($result);
+        $result = $this->trimClosers($result);
 
         /**
          * Remove new lines
@@ -42,9 +47,30 @@ class ValueResolver extends AbstractResolver implements ValueResolverInterface
         $result = $this->trimNewLines($result);
 
         /**
+         * Trim backslashes "\" sign
+         */
+        $result = $this->trimSlashes($result);
+
+        /**
          * Parsing values
          */
         $result = $this->valueparser->parse($result, $strict);
+
+        return $result;
+    }
+
+    private function trimSlashes($result)
+    {
+        $result =  preg_replace('/\\\\/', '\\', $result);
+
+        return stripslashes($result);
+    }
+
+    private function trimEmpty($result)
+    {
+        if ($result === '""' or $result === '\'\'') {
+            return '';
+        }
 
         return $result;
     }
@@ -66,14 +92,26 @@ class ValueResolver extends AbstractResolver implements ValueResolverInterface
 
     private function trimClosers($input)
     {
-        preg_match_all(self::CLOSERS, $input, $result, PREG_SET_ORDER, 0);
+        $parts = ['\'', '"'];
 
-        return addslashes($result[0]);
+        foreach ($parts as $part) {
+            if (substr($input, 0, 1) === $part && substr($input, -1) === $part) {
+                return substr($input, 1, -1);
+            }
+        }
+
+        return $input;
     }
 
     private function trimComments($input)
     {
-        return preg_replace('/#\S+[ \t]*/', '', $input);
+        preg_match_all(self::EXPLODE_COMMENTS, $input, $matches, PREG_SET_ORDER, 0);
+
+        if (isset($matches[0][1])) {
+            return $matches[0][1];
+        }
+
+        return $input;
     }
 
     private function checkSurroundingStripes($input)

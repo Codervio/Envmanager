@@ -231,9 +231,16 @@ class Envparser
             }
         }
 
-        if (!isset($_ENV[$value])) {
+        if (isset($_ENV[$value])) {
             return $_ENV[$value];
         }
+
+        return null;
+    }
+
+    public function getAllValues()
+    {
+        return $this->parsercollector->getArrayCopy();
     }
 
     public function getSystemVars()
@@ -262,6 +269,14 @@ class Envparser
 
     private function explodeKeyVal($value)
     {
-        return explode('=', $value);
+        $keyPair = strtok($value, '=');
+
+        preg_match("/^([^=]*)=(.*)/i", $value, $matches, 0);
+
+        if (!isset($matches[2])) {
+            return array($keyPair, null);
+        }
+
+        return array($keyPair, $matches[2]);
     }
 }
