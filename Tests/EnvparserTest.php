@@ -228,4 +228,17 @@ EOF;
         $this->assertSame('BAR2', $parsers['# COM2']);
         $this->assertSame('BAR1', $envparser->getValue('#COM1'));
     }
+
+    public function testGetSystemVars()
+    {
+        $envparser = new Envparser();
+        $envparser->load();
+        $envparser->run();
+
+        $systemvars = $envparser->getSystemVars();
+
+        $this->assertSame($systemvars['USERNAME'], $_ENV['USERNAME']);
+        $this->assertSame($envparser->getSystemVars('USERNAME'), $_ENV['USERNAME']);
+        $this->assertTrue($envparser->checkSystemVar('USERNAME'));
+    }
 }

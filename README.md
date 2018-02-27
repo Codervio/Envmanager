@@ -1,6 +1,7 @@
 # Environment manager
 
-The `Environment manager` parse, populates dot environment files to super global $_ENV files, HTTP request headers.
+The `Environment manager` parses, populates dot environment variables from env files to super global $_ENV variable, apache and getenv function.
+It supports for checking variables and fetching system only variables.
 
 It provides for editing environment file and manipulate them.
 
@@ -15,9 +16,13 @@ It provides for editing environment file and manipulate them.
 
 PHP version requirements: _PHP >7.0_
 
+PHP extension: _mbstring_
+
 Use `use Codervio\Environment\EnvParser` declaration for parsing dot env files.
 
 Use `use Codervio\Environment\EnvEditor` declaration for edit and manage dot env file.
+
+A [`requirements`] - Requirements and auto detect encodings script automatically can check mbstring extension and automatically detects encoding types.
 
 ## Usage
 
@@ -83,9 +88,9 @@ Quality assurance: Unit tests provided
 
 ### Envparser
 
-#### Examples
+#### Common env variables
 
-* For loading simple ENV variables use [`example`](getvalue.md)
+* For loading simple ENV variables use [`example`]
 
 ```text
 FOO=bar
@@ -94,9 +99,13 @@ FOO1=foo1
 WITHSPACES="with spaces"
 ```
 
-* Lists of examples env variables: [`lists`](lists.md)
+#### Lists examples env variables
 
-* Writing comments: [`comments`](comments.md)
+* Lists of examples env variables: [`lists`]
+
+#### Comments
+
+* Writing comments: [`comments`]
 
 ```shell
 # comment
@@ -104,6 +113,8 @@ WITHSPACES="with spaces"
 ## A main comment ##
 FOO=bar # a comment
 ```
+
+#### Comments parsing as variable (dev only, not recommeded)
 
 It is possible to parse comments variables such using:
 
@@ -143,18 +154,43 @@ will parsing a variable
   string(4) "BAR1"
 ```
 
-* Parsing export or setenv variables: [`envexports`](envexports.md)
+#### Parsing apache env variables or unix exports env variables
+
+* Parsing export or setenv variables: [`envexports`]
 
 ```shell
 setenv FOO1=value
 export FOO2=value
 ```
 
+#### Get a system only variables
+
+It is possible to fetch all system variables:
+
+```php
+use Codervio\Envmanager\Envparser;
+
+$envparser = new Envparser();
+$envparser->load();
+$envparser->run();
+
+var_dump($envparser->getSystemVars());
+```
+
+* For fetching single variable or just check a variable exists see [`getSystemVars`] and [`checkSystemVar()`]. 
+
 #### References
 
-* `Envparser()` - A construct parser constructor
-* `load()` - Load an environment .env  file or folder with .env files
-* `getValue()` - Get a value from system environment variables
-* `getAllValues()` - Returns parsed environment variables internally as array
+* [`requirements`] - Requirements and auto detect encodings
+* [`setEncoding()`] - Manually specify encoding
+* [`getEncoding()`] - Detect encoding type from file
+* [`checkSuperGlobalsSet()`] - Check if set or get env directive for $_ENV active
+* [`Envparser()`] - A construct parser constructor
+* [`load()`]- Load an environment .env  file or folder with .env files
+* [`getValue()`] - Get a value from system environment variables
+* [`getAllValues()`] - Returns parsed environment variables internally as array
+* [`getSystemVars()`] - Fetch all or one system variables
+* [`checkSystemVar()`] - Returns boolean if system variables exists
 
 ### EnvEditor
+

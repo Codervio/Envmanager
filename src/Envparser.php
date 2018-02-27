@@ -9,6 +9,7 @@ use Codervio\Envmanager\Resolver\ValueResolver;
 use Codervio\Envmanager\Parser\ParserCollector;
 use Codervio\Envmanager\Resolver\VariableResolver;
 use Codervio\Envmanager\Parser\Parser;
+use Codervio\Envmanager\Parser\SystemParser;
 use Exception;
 
 /**
@@ -38,11 +39,15 @@ class Envparser
     private $result;
     private $parsedsystemvars = array();
 
+    protected $systemparser = array();
+
     protected $fileEncoding;
 
     public function __construct($path = null, $keepComments = false, $extension = array('env', 'main.env'))
     {
         new Prerequisities();
+
+        $this->systemparser = new SystemParser();
 
         $this->loader = new Loader($path, $extension);
 
@@ -173,6 +178,10 @@ class Envparser
 
     public function processEnvironment($values)
     {
+        if (!is_array($values)) {
+            return null;
+        }
+
         foreach ($values as $envkey => $envvalue) {
             // HTTP_ ....
 
@@ -243,9 +252,14 @@ class Envparser
         return $this->parsercollector->getArrayCopy();
     }
 
-    public function getSystemVars()
+    public function checkSystemVar($variable)
     {
-        return $this->parsedsystemvars;
+        return $this->systemparser->checkValue($variable);
+    }
+
+    public function getSystemVars($variable = null)
+    {
+        return $this->systemparser->getValues($variable);
     }
 
     public function run()
