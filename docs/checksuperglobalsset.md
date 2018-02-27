@@ -1,11 +1,11 @@
-# checksuperglobalsset
+# checkSuperGlobalsSet
 
 Check if set or get env directive for $_ENV active.
 
 ## Description
 
 ```php
-checksuperglobalsset()
+checkSuperGlobalsSet()
 ```
 
 A function checks on php.ini _variables_order_ directive is set to global _G_ or all super globals.
@@ -28,7 +28,7 @@ Get all environment system variables:
 
 ```php
     $envparser = new Envparser();
-    if ($envparser->checksuperglobalsset()) {
+    if ($envparser->checkSuperGlobalsSet()) {
         // Directive passed
     } exception RuntimeException() {
         // Thrown runtime exception

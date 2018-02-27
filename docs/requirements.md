@@ -84,6 +84,4 @@ _No notes._
 
 ## See also
 
-* [`requirements`](requirements.md) - Requirements and auto detect encodings
-* [`setEncoding()`](requirements.md) - Manually specify encoding
-* [`getEncoding()`](requirements.md) - Detect encoding type from file
+* [`checkSuperGlobalsSet()`](checksuperglobalsset.md) - Check if set or get env directive for $_ENV active
