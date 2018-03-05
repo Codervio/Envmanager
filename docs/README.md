@@ -1,5 +1,9 @@
 # Environment manager
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/codervio/envmanager.svg?style=flat-square)](https://packagist.org/packages/codervio/envmanager)
+[![Build Status](https://travis-ci.org/codervio/envmanager.svg?branch=master)](https://travis-ci.org/codervio/envmanager)
+[![Total Downloads](https://img.shields.io/scrutinizer/g/codervio/envmanager.svg?style=flat-square)](https://packagist.org/packages/codervio/envmanager)
+
 The `Environment manager` parses, populates dot environment variables from env files to super global $_ENV variable, apache and getenv function.
 It supports for checking variables and fetching system only variables.
 
@@ -159,8 +163,9 @@ will parsing a variable
 * Parsing export or setenv variables: [`envexports`](envexports.md)
 
 ```shell
-setenv FOO1=value
-export FOO2=value
+setenv FOO1=value # general csh case
+export FOO2=value 
+SetEnv FOO3=value # Apache camel case
 ```
 
 #### Get a system only variables
@@ -177,7 +182,9 @@ $envparser->run();
 var_dump($envparser->getSystemVars());
 ```
 
-* For fetching single variable or just check a variable exists see [`getSystemVars`](getsystemvars.md) and [`checkSystemVar()`](checksystemvar.md). 
+* For fetching single variable or just check a variable exists see [`getSystemVars`](getsystemvars.md) and [`checkSystemVar()`](checksystemvar.md).
+* See validation types for values in environment variables:  [`required()`](required.md)
+* To fetch a comment from a file of specific variable use: [`getComment()`](getcomment.md)
 
 #### References
 
@@ -187,10 +194,15 @@ var_dump($envparser->getSystemVars());
 * [`checkSuperGlobalsSet()`](checksuperglobalsset.md) - Check if set or get env directive for $_ENV active
 * [`Envparser()`](envparser.md) - A construct parser constructor
 * [`load()`](load.md) - Load an environment .env  file or folder with .env files
-* [`getValue()`](getvalue.md) - Get a value from system environment variables
+* [`getComment()`](getcomment.md) - Get a comment from a variable of .env file
+* [`getValue()`](getvalue.md) - Get a value from system environment variables and parsing variables
 * [`getAllValues()`](getallvalues.md) - Returns parsed environment variables internally as array
 * [`getSystemVars()`](getsystemvars.md) - Fetch all or one system variables
 * [`checkSystemVar()`](checksystemvar.md) - Returns boolean if system variables exists
+* [`setStrictBool()`](setstrictbool.md) - Parse value to boolen on non-standard values such as 'y/n' or '1/0'
+* [`required()`](required.md) - Instance of variable validator and variable validators
 
 ### EnvEditor
 
+* [`Enveditor`](enveditor.md) - Instance environment for creating environment file
+* [`Help`](helps.md) - Common helps and issues in a code

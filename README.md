@@ -1,5 +1,9 @@
 # Environment manager
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/codervio/envmanager.svg?style=flat-square)](https://packagist.org/packages/codervio/envmanager)
+[![Build Status](https://travis-ci.org/codervio/envmanager.svg?branch=master)](https://travis-ci.org/codervio/envmanager)
+[![Total Downloads](https://img.shields.io/scrutinizer/g/codervio/envmanager.svg?style=flat-square)](https://packagist.org/packages/codervio/envmanager)
+
 The `Environment manager` parses, populates dot environment variables from env files to super global $_ENV variable, apache and getenv function.
 It supports for checking variables and fetching system only variables.
 
@@ -159,8 +163,9 @@ will parsing a variable
 * Parsing export or setenv variables: [`envexports`]
 
 ```shell
-setenv FOO1=value
-export FOO2=value
+setenv FOO1=value # general csh case
+export FOO2=value 
+SetEnv FOO3=value # Apache camel case
 ```
 
 #### Get a system only variables
@@ -177,7 +182,9 @@ $envparser->run();
 var_dump($envparser->getSystemVars());
 ```
 
-* For fetching single variable or just check a variable exists see [`getSystemVars`] and [`checkSystemVar()`]. 
+* For fetching single variable or just check a variable exists see [`getSystemVars`] and [`checkSystemVar()`].
+* See validation types for values in environment variables:  [`required()`]
+* To fetch a comment from a file of specific variable use: [`getComment()`]
 
 #### References
 
@@ -186,11 +193,16 @@ var_dump($envparser->getSystemVars());
 * [`getEncoding()`] - Detect encoding type from file
 * [`checkSuperGlobalsSet()`] - Check if set or get env directive for $_ENV active
 * [`Envparser()`] - A construct parser constructor
-* [`load()`]- Load an environment .env  file or folder with .env files
-* [`getValue()`] - Get a value from system environment variables
+* [`load()`] - Load an environment .env  file or folder with .env files
+* [`getComment()`] - Get a comment from a variable of .env file
+* [`getValue()`] - Get a value from system environment variables and parsing variables
 * [`getAllValues()`] - Returns parsed environment variables internally as array
 * [`getSystemVars()`] - Fetch all or one system variables
-* [`checkSystemVar()`] - Returns boolean if system variables exists
+* [`checkSystemVar()`]- Returns boolean if system variables exists
+* [`setStrictBool()`] - Parse value to boolen on non-standard values such as 'y/n' or '1/0'
+* [`required()`] - Instance of variable validator and variable validators
 
 ### EnvEditor
 
+* [`Enveditor`] - Instance environment for creating environment file
+* [`Help`] - Common helps and issues in a code

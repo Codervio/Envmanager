@@ -2,7 +2,6 @@
 
 namespace Codervio\Envmanager;
 
-use Codervio\Envmanager\Prerequisities;
 use Codervio\Envmanager\Loader\Loader;
 use Codervio\Envmanager\Resolver\KeyResolver;
 use Codervio\Envmanager\Resolver\ValueResolver;
@@ -10,18 +9,15 @@ use Codervio\Envmanager\Parser\ParserCollector;
 use Codervio\Envmanager\Resolver\VariableResolver;
 use Codervio\Envmanager\Parser\Parser;
 use Codervio\Envmanager\Parser\SystemParser;
+use Codervio\Envmanager\Validator\VariableValidator;
+use Codervio\Envmanager\Abstractparser\Envabstract;
 use Exception;
 
 /**
  * Class EnvParser
  *
- * @todo escape quotation mark
- * @todo new line into double quoted
- * @todo tests
- * @todo parse pseudo env
- * @todo multiline parsing
  */
-class Envparser
+class Envparser extends Envabstract
 {
     /**
      * @var array
@@ -33,15 +29,16 @@ class Envparser
     protected $parsercollector;
     protected $variable_collector;
     protected $loader;
-    protected $strictbool;
+    protected $strictbool = false;
     protected $processEnv = true;
     protected $override = false;
-    private $result;
-    private $parsedsystemvars = array();
 
+    protected $parsedsystemvars = array();
     protected $systemparser = array();
-
     protected $fileEncoding;
+    protected $commentResolver = array();
+
+    private $result;
 
     public function __construct($path = null, $keepComments = false, $extension = array('env', 'main.env'))
     {
@@ -83,31 +80,9 @@ class Envparser
         return false;
     }
 
-    private function getParsed() : ParserCollector
-    {
-        $parsedText = $this->parser->prepareLines($this->context);
-
-        $this->parser->explodeLines($parsedText);
-
-        return $this->parseLines();
-    }
-
     public function setEncoding($encoding = 'UTF-8')
     {
         $this->fileEncoding = $encoding;
-    }
-
-    private function parseEncoding($data)
-    {
-        if (empty($this->fileEncoding)) {
-            $this->fileEncoding = mb_detect_encoding($data, "auto");
-        }
-
-        if (!in_array($this->fileEncoding, mb_list_encodings())) {
-            throw new Exception(sprintf('Encoding "%s" not found. Check supported encoding using mb_list_encoding() function or use mostly UTF-8 encoding type', $this->fileEncoding));
-        }
-
-        return mb_convert_encoding($data, $this->fileEncoding, 'auto');
     }
 
     public function getEncoding()
@@ -115,56 +90,19 @@ class Envparser
         return $this->fileEncoding;
     }
 
-    public function setStrictBool($state = true)
+    public function setStrictBool($state = false)
     {
         $this->strictbool = $state;
     }
 
-    public function require($variable)
+    public function required($variable)
     {
-        // Validator
-
         $variableValidator = new VariableValidator($variable);
 
-        $variableValidator->setStrict($this->strictbool);
+        $variableValidator->setStrict($this->getStrictBool());
         $variableValidator->setResult($this->result);
 
         return $variableValidator;
-
-    }
-
-    public function parseLines() : ParserCollector
-    {
-        foreach (getenv() as $key => $value)
-        {
-            $parsedsysvars = $this->parsercollector->offsetSet($key, $value);
-        }
-
-        $this->parsedsystemvars = $parsedsysvars;
-
-        foreach ($this->parser->arr->getArrayCopy() as $key => $line) {
-
-            if ($this->variable_collector->isComment($line) && !$this->keepcomments) {
-
-                $this->parser->arr->offsetUnset($key);
-
-            } else {
-
-                list($k, $v) = $this->explodeKeyVal($line);
-
-                $key = $this->keyresolver->execute($k);
-                $value = $this->valueresolver->execute($v, $this->strictbool);
-
-                $value = $this->variable_collector->parseSystemEnvironmentVariables($value);
-                $value = $this->variable_collector->parseVariable($value, $this->parsercollector);
-
-                $this->parsercollector->offsetSet($key, $value);
-            }
-        }
-
-        unset($this->parser->arr);
-
-        return $this->parsercollector;
     }
 
     public function checkSuperGlobalsSet()
@@ -173,52 +111,6 @@ class Envparser
             return true;
         } else {
             throw new RuntimeException('Warning: Set and create globals for $_ENV is disabled. To enable globally, for console run: \'php -d variables_order=EGPCS php.php\' or set in php.ini directive: variables_order=EGPCS');
-        }
-    }
-
-    public function processEnvironment($values)
-    {
-        if (!is_array($values)) {
-            return null;
-        }
-
-        foreach ($values as $envkey => $envvalue) {
-            // HTTP_ ....
-
-            if (!$this->override) {
-
-                if (function_exists('getenv')) {
-                    if (!getenv($envkey, false)) {
-                        putenv("$envkey=$envvalue");
-                    }
-                }
-
-                if (!isset($_ENV[$envkey])) {
-                    $_ENV[$envkey] = $envvalue;
-                }
-
-                if (!isset($_SERVER[$envkey])) {
-                    $_SERVER[$envkey] = $envvalue;
-                }
-
-                if (function_exists('apache_getenv')) {
-                    if (!apache_getenv($envkey, false)) {
-                        @apache_setenv($envkey, $envvalue, false);
-                    }
-                }
-
-            } else {
-
-                if (function_exists('putenv')) {
-                    putenv("$envkey=$envvalue");
-                }
-                $_ENV[$envkey] = $envvalue;
-                $_SERVER[$envkey] = $envvalue;
-                if (function_exists('apache_setenv')) {
-                    @apache_setenv($envkey, $envvalue, false);
-                }
-
-            }
         }
     }
 
@@ -234,14 +126,14 @@ class Envparser
             }
         }
 
+        if (isset($_ENV[$value])) {
+            return $_ENV[$value];
+        }
+
         if (function_exists('getenv')) {
             if (getenv($value, false)) {
                 return getenv($value);
             }
-        }
-
-        if (isset($_ENV[$value])) {
-            return $_ENV[$value];
         }
 
         return null;
@@ -281,16 +173,10 @@ class Envparser
         return $resultParsed;
     }
 
-    private function explodeKeyVal($value)
+    public function getComment($key)
     {
-        $keyPair = strtok($value, '=');
-
-        preg_match("/^([^=]*)=(.*)/i", $value, $matches, 0);
-
-        if (!isset($matches[2])) {
-            return array($keyPair, null);
+        if (isset($this->commentResolver[$key])) {
+            return $this->commentResolver[$key];
         }
-
-        return array($keyPair, $matches[2]);
     }
 }

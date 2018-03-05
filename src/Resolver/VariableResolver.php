@@ -48,7 +48,7 @@ class VariableResolver
     {
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
             if (strlen($value) > 32767) {
-                throw new ValueException('A value length on Windows OS is limited to 32767 charaters.');
+                throw new ValueException('A value length on Windows OS family is limited to 32767 characters.');
             }
         }
     }

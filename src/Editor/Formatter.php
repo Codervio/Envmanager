@@ -10,7 +10,7 @@ class Formatter
     {
         if (array_key_exists('key', $item)) {
             $key = $item['key'];
-            $value = array_key_exists('value', $item) ? $item['value'] : null;
+            $value = array_key_exists('value', $item) ? '"'.$item['value'].'"' : null;
             $comment = array_key_exists('comment', $item) ? $item['comment'] : null;
             $export = array_key_exists('export', $item) ? $item['export'] : null;
 
@@ -24,6 +24,16 @@ class Formatter
 
     public function formatSetter($value)
     {
+        if ($value['export']) {
+            $value['export'] = 'export ';
+        } else {
+            $value['export'] = '';
+        }
+
+        if (isset($value['comment'])) {
+            $value['comment'] = ' # '.$value['comment'];
+        }
+
         return (string)"{$value['export']}{$value['key']}={$value['value']}{$value['comment']}";
     }
 

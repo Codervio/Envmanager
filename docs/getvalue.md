@@ -1,6 +1,6 @@
 # getValue
 
-Get a value from system environment variables
+Get a value from system environment variables and parsing variables
 
 ## Description
 
@@ -112,10 +112,43 @@ Will return:
 (string) with quote value
 ```
 
+## Parsing variables
+
+By application, it will automatically parse system variables from Unix system.
+If defined inside values a variable it will automatically parse on Unix and Windows system.
+
+Example parsing variable:
+
+```text
+MYVARTEST=123
+MYVARTEST2=${MYVARTEST}A
+MYVARTEST2=B${MYVARTEST}A
+```
+
+Will parse and return result:
+
+```text
+123
+123A
+B123A
+```
+
+> On Unix system it will parse inside `${VAR}`, on Windows family it will parse inside `%VAR%` structure.
+
+> Maximum length on Windows system for values is 32767 characters.
+
+## Special variables
+
+It is possible set a variable with dot in variable name:
+
+```text
+SP.EC6="0.k$"
+```
+
 ## Notes
 
 > If a value is not defined it will return null value
-> A value with spaces without quote is forbidden such as 'VAR=some value'. Should be: 'VAR="some value"' 
+> A value with spaces without quote is forbidden such as 'VAR=some value'. Should be: 'VAR="some value"'
 
 ## See also
 

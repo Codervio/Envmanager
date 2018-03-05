@@ -5,6 +5,7 @@ namespace Codervio\Http\Tests;
 use Codervio\Envmanager\Envparser;
 use Codervio\Envmanager\Exceptions\ValueException;
 use Codervio\Envmanager\Exceptions\ParseException;
+use Codervio\Envmanager\Exceptions\ValidationException;
 
 /**
  * Envparser unit test
@@ -67,17 +68,17 @@ EOF;
         $envfile = $this->getFileTest('.env');
 
         $envparser = new Envparser($envfile);
-        $envparserLoader = $envparser->load();
+        $envparser->load();
 
         $envparser->run();
 
-        $this->assertSame($envparser->getValue('FOO'), 'bar');
+        $this->assertSame('bar', $envparser->getValue('FOO'));
         $this->assertSame($envparser->getValue('FOO1'), getenv('FOO1'));
         $this->assertEmpty($envparser->getValue('VAREMPTY'));
         $this->assertEmpty($envparser->getValue('NOTEXISTSVARIABLE'));
         $this->assertEmpty($envparser->getValue('VAREMPTYSTRING'));
-        $this->assertSame($envparser->getValue('VARSPACES'), 'with space value');
-        $this->assertSame($envparser->getValue('VARWITHQUOTE'), 'with quote value');
+        $this->assertSame('with space value', $envparser->getValue('VARSPACES'));
+        $this->assertSame('with quote value', $envparser->getValue('VARWITHQUOTE'));
     }
 
     public function testEnvComments()
@@ -85,7 +86,7 @@ EOF;
         $envfile = $this->getFileTest('comments.env');
 
         $envparser = new Envparser($envfile);
-        $envparserLoader = $envparser->load();
+        $envparser->load();
 
         $envparser->run();
 
@@ -101,7 +102,7 @@ EOF;
         $this->assertSame('with spaces', getenv('COM9'));
         $this->assertSame('with spaces', getenv('COM10'));
         $this->assertSame('with spaces', getenv('COM11'));
-        $this->assertSame('with spaces', getenv('COM12'));
+        $this->assertSame('with tab spaced', getenv('COM12'));
         $this->assertSame("test with ' inside", getenv('COM13'));
         $this->assertSame('with spaces', getenv('COM10'));
         $this->assertSame('a value with & mark and " mark with # sign', getenv('COM14'));
@@ -212,6 +213,8 @@ EOF;
         $this->assertSame('bar', $_ENV['SETENV2']);
         $this->assertSame('with spaces', $_ENV['SETENV3']);
         $this->assertEmpty($_ENV['SETENV4']);
+
+        $this->assertSame('bar', $_ENV['SETENV5']);
     }
 
     public function testParsingCommentsAndAllValues()
@@ -240,5 +243,127 @@ EOF;
         $this->assertSame($systemvars['USERNAME'], $_ENV['USERNAME']);
         $this->assertSame($envparser->getSystemVars('USERNAME'), $_ENV['USERNAME']);
         $this->assertTrue($envparser->checkSystemVar('USERNAME'));
+    }
+
+    public function testStrictBool()
+    {
+        $envfile = $this->getFileTest('bool_strict.env');
+
+        $envparser = new Envparser($envfile, true);
+        $envparser->setStrictBool(false);
+        $envparser->load();
+        $envparser->run();
+
+        $this->assertSame('y', $envparser->getValue('STRICTVARY_ONLYVAR'));
+        $this->assertSame('n', $envparser->getValue('STRICTVARN_ONLYVAR'));
+
+        $this->assertTrue($envparser->getValue('BOOLYES'));
+        $this->assertFalse($envparser->getValue('BOOLFALSE'));
+        $this->assertTrue($envparser->getValue('BOOLTRUE'));
+        $this->assertFalse($envparser->getValue('BOOLFALSE'));
+        $this->assertTrue($envparser->getValue('BOOLON'));
+        $this->assertFalse($envparser->getValue('BOOLOFF'));
+    }
+
+    public function testBoolVars()
+    {
+        unset($_ENV['STRICTVARY']);
+        putenv("STRICTVARY=");
+
+        $envfile = $this->getFileTest('bool_strict.env');
+
+        $envparser = new Envparser($envfile, false);
+        $envparser->setStrictBool(true);
+        $envparser->load();
+        $envparser->run();
+
+        $this->assertTrue($envparser->getValue('STRICTVARY'));
+    }
+
+    public function testRequire()
+    {
+        $envfile = $this->getFileTest('checkvars.env');
+
+        $envparser = new Envparser($envfile, false);
+        $envparser->load();
+        $envparser->run();
+
+        $this->assertTrue($envparser->required('CVFOOEMPTY')->isEmpty());
+        $this->assertFalse($envparser->required('CVFOONOTEMPTY')->isEmpty());
+
+        $this->assertTrue($envparser->required('CVBOOL')->isBoolean());
+        $this->assertTrue($envparser->required('CVBOOL2')->isBoolean());
+        $this->assertTrue($envparser->required('CVBOOL3')->isBoolean());
+        $this->assertFalse($envparser->required('CVBOOL4')->isBoolean());
+
+        $this->assertTrue($envparser->required('CVNUMBER')->isNumber());
+        $this->assertFalse($envparser->required('CVNUMBER2')->isNumber());
+        $this->assertTrue($envparser->required('CVNUMBER3')->isFloat());
+        $this->assertFalse($envparser->required('CVNUMBER2')->isFloat());
+    }
+
+    public function testCheckValuesValidator()
+    {
+        $envfile = $this->getFileTest('checkvars.env');
+
+        $envparser = new Envparser($envfile, false);
+        $envparser->load();
+        $envparser->run();
+
+        $this->assertTrue($envparser->required('CVFOONOTEMPTY')->checkValues('notempty'));
+        $this->assertTrue($envparser->required('CVFOONOTEMPTY')->checkValues(array('notempty')));
+    }
+
+    /**
+     * @expectedException Codervio\Envmanager\Exceptions\ValidationException
+     */
+    public function testCheckValuesValidationException()
+    {
+        $envfile = $this->getFileTest('checkvars.env');
+
+        $envparser = new Envparser($envfile, false);
+        $envparser->load();
+        $envparser->run();
+
+        $this->assertTrue($envparser->required('CVFOONOTEMPTY')->checkValues(array('notempty', 'abc')));
+    }
+
+    public function testVariables()
+    {
+        $envfile = $this->getFileTest('variables.env');
+
+        $envparser = new Envparser($envfile, false);
+        $envparser->load();
+        $envparser->run();
+
+        $this->assertSame(123, $envparser->getValue('MYVARTEST'));
+        $this->assertSame("123", $envparser->getValue('MYVARTEST2'));
+        $this->assertSame("0123", $envparser->getValue('MYVARTEST3'));
+        $this->assertSame("123456", $envparser->getValue('MYVARTEST4'));
+    }
+
+    public function testSpecialCharacters()
+    {
+        $envfile = $this->getFileTest('special.env');
+
+        $envparser = new Envparser($envfile, false);
+        $envparser->load();
+        $envparser->run();
+
+        $this->assertSame("0.k$", $envparser->getValue('SP.EC6'));
+        $this->assertSame('!@@$54#b5f&(*(#5FDS/?"{fdsfs3)fsdf__4+}|?"><a', $envparser->getValue('SPEC7'));
+        $this->assertSame('������', $envparser->getValue('SPEC8'));
+        $this->assertSame('�����������������������������', $envparser->getValue('SPEC9'));
+    }
+
+    public function testGetComment()
+    {
+        $envfile = $this->getFileTest('.env');
+
+        $envparser = new Envparser($envfile, false);
+        $envparser->load();
+        $envparser->run();
+
+        $this->assertSame('comment', $envparser->getComment('FOO1'));
     }
 }

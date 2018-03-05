@@ -4,7 +4,7 @@ namespace Codervio\Envmanager\Validator;
 
 use Codervio\Envmanager\Parser\ValueParser;
 use Codervio\Envmanager\Exceptions\ValidationException;
-use RuntimeException;
+use Codervio\Envmanager\Exceptions\VariableException;
 use Exception;
 
 class VariableValidator
@@ -33,8 +33,8 @@ class VariableValidator
 
     private function checkVariable($variable, $result)
     {
-        if (!isset($result[$variable])) {
-            throw new RuntimeException(sprintf('No variable "%s" set', $variable));
+        if (!array_key_exists($variable, $result)) {
+            throw new VariableException(sprintf('No variable "%s" set', $variable));
         }
     }
 
@@ -49,7 +49,11 @@ class VariableValidator
             throw new Exception('No variable');
         }
 
-        return $this->valueParser->parseBool($this->result[$this->variable], $this->strict);
+        if (is_bool($this->valueParser->parseBool($this->result[$this->variable], $this->strict))) {
+            return true;
+        }
+
+        return false;
     }
 
     public function isEmpty()
@@ -72,7 +76,7 @@ class VariableValidator
 
     public function isFloat()
     {
-        if (is_int($this->valueParser->parseFloat($this->result[$this->variable]))) {
+        if (is_float($this->valueParser->parseFloat($this->result[$this->variable]))) {
             return true;
         }
 

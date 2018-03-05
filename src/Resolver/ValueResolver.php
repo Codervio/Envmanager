@@ -8,62 +8,99 @@ use Codervio\Envmanager\Exceptions\ValueException;
 
 class ValueResolver extends AbstractResolver implements ValueResolverInterface
 {
-    public function execute($value, $strict = false)
+    public function execute($value, $strict)
     {
         /**
          * Trim comments
          */
-        $result = $this->trimComments($value);
-
-        /**
-         * Trim spaces
-         */
-        $result = trim($result);
-
-        /**
-         * Check 'abc' or "abc"
-         */
-        $result = $this->checkInvalidSign($result);
+        $value = $this->trimComments($value);
 
         /**
          * Throw if failed one of ' or " sign
          */
-        $result = $this->checkSurroundingStripes($result);
+        $value = $this->checkSurroundingStripes($value);
+
+        /**
+         * Trim on both side quotes and marks
+         */
+        $value = $this->trimSlashes($value);
+
+        /**
+         * Trim spaces
+         */
+        $value = trim($value);
+
+        /**
+         * Check 'abc' or "abc"
+         */
+        //$result = $this->checkInvalidSign($result);
 
         /**
          * Trim empty '' or ""
          */
-        $result = $this->trimEmpty($result);
+        $value = $this->trimEmpty($value);
 
         /**
          * Remove "" and ''
          * Fix it on TK3 crashed
          */
-        $result = $this->trimClosers($result);
+        $value = $this->trimClosers($value);
 
         /**
          * Remove new lines
          */
-        $result = $this->trimNewLines($result);
+        $value = $this->trimNewLines($value);
 
         /**
          * Trim backslashes "\" sign
          */
-        $result = $this->trimSlashes($result);
+        $value = $this->trimBackslashes($value);
 
         /**
          * Parsing values
          */
-        $result = $this->valueparser->parse($result, $strict);
+        $value = $this->valueparser->parse($value, $strict);
 
-        return $result;
+        return $value;
     }
 
-    private function trimSlashes($result)
+    public function resolveComment($value)
+    {
+        preg_match_all(self::GET_COMMENT, $value, $matches, PREG_SET_ORDER, 0);
+
+        if (isset($matches[0][2])) {
+            return trim($matches[0][2]);
+        }
+
+        return false;
+    }
+
+    private function trimBackslashes($result)
     {
         $result =  preg_replace('/\\\\/', '\\', $result);
 
         return stripslashes($result);
+    }
+
+    private function trimSlashes($input)
+    {
+        if (substr($input, 0, 1) === '"') {
+            $input = ltrim($input, '"');
+        }
+
+        if (substr($input, -1) === '"') {
+            $input = rtrim($input, '"');
+        }
+
+        if (substr($input, 0, 1) === '\'') {
+            $input = ltrim($input, '\'');
+        }
+
+        if (substr($input, -1) === '\'') {
+            $input = rtrim($input, '\'');
+        }
+
+        return $input;
     }
 
     private function trimEmpty($result)
@@ -92,13 +129,8 @@ class ValueResolver extends AbstractResolver implements ValueResolverInterface
 
     private function trimClosers($input)
     {
-        $parts = ['\'', '"'];
-
-        foreach ($parts as $part) {
-            if (substr($input, 0, 1) === $part && substr($input, -1) === $part) {
-                return substr($input, 1, -1);
-            }
-        }
+        $input = preg_replace('/^\'|\'$/', '', $input);
+        $input = preg_replace('/^\"|\"$/', '', $input);
 
         return $input;
     }
@@ -106,6 +138,10 @@ class ValueResolver extends AbstractResolver implements ValueResolverInterface
     private function trimComments($input)
     {
         preg_match_all(self::EXPLODE_COMMENTS, $input, $matches, PREG_SET_ORDER, 0);
+
+        if (isset($matches[0][3])) {
+            return $matches[0][3];
+        }
 
         if (isset($matches[0][1])) {
             return $matches[0][1];

@@ -2,8 +2,8 @@
 
 namespace Codervio\Envmanager\Editor;
 
-use ArrayStore;
-use Formatter;
+use Codervio\Envmanager\Resolver\ArrayStore;
+use Codervio\Envmanager\Editor\Formatter;
 
 class EnvWriter
 {
@@ -30,7 +30,11 @@ class EnvWriter
 
     public function clearBuffer()
     {
-        unset($this->buffer);
+        if (is_array($this->arr->getArrayCopy())) {
+            foreach ($this->arr->getArrayCopy() as $index => $value) {
+                $this->arr->offsetUnset($index);
+            }
+        }
     }
 
     public function clearAll()
@@ -41,7 +45,7 @@ class EnvWriter
     private function ensureForcedClear()
     {
         if ($this->forceclear) {
-            unset($this->buffer);
+            unset($this->arr);
         }
     }
 
@@ -50,6 +54,10 @@ class EnvWriter
         $this->ensureForcedClear();
 
         $result = '';
+
+        if (empty($this->arr)) {
+            return (string)null;
+        }
 
         foreach ($this->arr->getArrayCopy() as $value) {
 
@@ -67,8 +75,6 @@ class EnvWriter
 
     public function put($key, $value = null, $comment = null, $export = false)
     {
-        // handle put to array buffer
-
         $packArray = compact('key', 'value', 'comment', 'export');
 
         $result = $this->formatter->setKeys($packArray);

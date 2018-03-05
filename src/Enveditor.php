@@ -2,7 +2,11 @@
 
 namespace Codervio\Envmanager;
 
-class EnvEditor extends EnvParser
+use Codervio\Envmanager\Envparser;
+use Codervio\Envmanager\Editor\EnvWriter;
+use Codervio\Envmanager\Loader\Loader;
+
+class Enveditor extends EnvParser
 {
     private $content;
 
@@ -17,7 +21,6 @@ class EnvEditor extends EnvParser
         $this->writer = new EnvWriter();
 
         if ($context instanceof EnvParser) {
-            // $this->content = $content;
 
             if ($context->loader->getLoadStatus()) {
 
@@ -31,7 +34,6 @@ class EnvEditor extends EnvParser
 
                 }
             }
-
 
         } else {
 
@@ -76,7 +78,7 @@ class EnvEditor extends EnvParser
 
     public function save()
     {
-        return file_put_contents($this->context, $this->getContent());
+        return (bool)(int)file_put_contents($this->context, $this->getContent());
     }
 
     public function removeFile()

@@ -7,11 +7,9 @@ class ValueParser
     public function parse($input, $strict)
     {
         $input = $this->parseEmpty($input, $strict);
-        $input = $this->parseBool($input, $strict);
         $input = $this->parseFloat($input);
         $input = $this->parseNumeric($input);
-
-        //$input = $this->parseVariable($input);
+        $input = $this->parseBool($input, $strict);
 
         return $input;
     }
@@ -41,18 +39,16 @@ class ValueParser
     public function parseBool($var, $strict)
     {
         if ($strict) {
-
-            if (preg_match('/true|yes|on|1|y/i', $var)) {
+            if (preg_match('/^(true|yes|on|1|y)$/i', $var)) {
                 return true;
-            } else if (preg_match('/false|no|off|0|n/i', $var)) {
+            } else if (preg_match('/^(false|no|off|0|n)$/i', $var)) {
                 return false;
             }
 
         } else {
-
-            if (preg_match('/true|yes|on/i', $var)) {
+            if (preg_match('/^(true|yes|on)$/i', $var)) {
                 return true;
-            } else if (preg_match('/false|no|off/i', $var)) {
+            } else if (preg_match('/^(false|no|off)$/i', $var)) {
                 return false;
             }
 

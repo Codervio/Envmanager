@@ -43,6 +43,7 @@ COMMENTANDMARKS='a value with & mark and \" mark with # sign' # a comment
 ```shell
 export FOO=foo bar
 setenv FOO=foo bar
+SetEnv FOO=foo bar # camel case Apache env
 ```
 
 ## Invalid variable
