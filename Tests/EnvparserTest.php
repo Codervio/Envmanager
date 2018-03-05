@@ -114,7 +114,7 @@ EOF;
         $envfile = $this->getFileTest('special.env');
 
         $envparser = new Envparser($envfile);
-        $envparserLoader = $envparser->load();
+        $envparser->load();
 
         $envparser->run();
 
@@ -133,7 +133,7 @@ EOF;
         $envfile = $this->getFileTest('exception.env');
 
         $envparser = new Envparser($envfile);
-        $envparserLoader = $envparser->load();
+        $envparser->load();
 
         $envparser->run();
 
@@ -145,7 +145,7 @@ EOF;
         $envfile = $this->getFileTest('export_setenv.env');
 
         $envparser = new Envparser($envfile);
-        $envparserLoader = $envparser->load();
+        $envparser->load();
 
         $envparser->run();
 
@@ -168,7 +168,7 @@ EOF;
         $envfile = $this->getFileTest('invalidvar.env');
 
         $envparser = new Envparser($envfile);
-        $envparserLoader = $envparser->load();
+        $envparser->load();
 
         $envparser->run();
 
@@ -180,7 +180,7 @@ EOF;
         $envfile = $this->getFileTest('export_setenv.env');
 
         $envparser = new Envparser($envfile);
-        $envparserLoader = $envparser->load();
+        $envparser->load();
 
         $envparser->run();
 
@@ -200,7 +200,7 @@ EOF;
         $envfile = $this->getFileTest('export_setenv.env');
 
         $envparser = new Envparser($envfile);
-        $envparserLoader = $envparser->load();
+        $envparser->load();
 
         $envparser->run();
 

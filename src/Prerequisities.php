@@ -2,6 +2,8 @@
 
 namespace Codervio\Envmanager;
 
+use RuntimeException;
+
 class Prerequisities
 {
     public function __construct()

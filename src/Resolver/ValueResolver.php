@@ -31,11 +31,6 @@ class ValueResolver extends AbstractResolver implements ValueResolverInterface
         $value = trim($value);
 
         /**
-         * Check 'abc' or "abc"
-         */
-        //$result = $this->checkInvalidSign($result);
-
-        /**
          * Trim empty '' or ""
          */
         $value = $this->trimEmpty($value);
@@ -115,16 +110,6 @@ class ValueResolver extends AbstractResolver implements ValueResolverInterface
     private function trimNewLines($result)
     {
         return str_replace(array(self::UNIX_NL, self::DOS_NL, self::MAC_NL), '', $result);
-    }
-
-    private function checkInvalidSign($value)
-    {
-        if (preg_match(self::INVALID_PREG, $value)) {
-
-            throw new ValueException(sprintf("Invalid format type: %s", $value));
-        }
-
-        return $value;
     }
 
     private function trimClosers($input)

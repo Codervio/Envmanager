@@ -19,8 +19,6 @@ class EnveditorTest extends \PHPUnit_Framework_TestCase
     {
         $this->tmpPathEnv = sys_get_temp_dir() . self::DS . 'EnveditorTestEnv.env';
 
-        echo 'PATH: '.$this->tmpPathEnv.PHP_EOL;
-
         if (!touch($this->tmpPathEnv)) {
             throw new \RuntimeException(sprintf('A test failed. Could not write a file to "%s" path', $this->tmpPathEnv));
         }

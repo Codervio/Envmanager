@@ -3,7 +3,6 @@
 namespace Codervio\Envmanager\Abstractparser;
 
 use Codervio\Envmanager\Parser\ParserCollector;
-use Exception;
 
 abstract class Envabstract
 {
@@ -18,7 +17,7 @@ abstract class Envabstract
         }
 
         if (!in_array($this->fileEncoding, mb_list_encodings())) {
-            throw new Exception(sprintf('Encoding "%s" not found. Check supported encoding using mb_list_encoding() function or use mostly UTF-8 encoding type', $this->fileEncoding));
+            throw new \Exception(sprintf('Encoding "%s" not found. Check supported encoding using mb_list_encoding() function or use mostly UTF-8 encoding type', $this->fileEncoding));
         }
 
         return mb_convert_encoding($data, $this->fileEncoding, 'auto');
@@ -64,8 +63,7 @@ abstract class Envabstract
 
                 if (function_exists('apache_getenv')) {
                     if (!apache_getenv($envkey, false)) {
-                        /** @scrutinizer ignore-unhandled */
-                        @apache_setenv($envkey, $envvalue, false);
+                        /** @scrutinizer ignore-unhandled */ @apache_setenv($envkey, $envvalue, false);
                     }
                 }
 
@@ -78,8 +76,7 @@ abstract class Envabstract
 
                 $_SERVER[$envkey] = $envvalue;
                 if (function_exists('apache_setenv')) {
-                    /** @scrutinizer ignore-unhandled */
-                    @apache_setenv($envkey, $envvalue, false);
+                    /** @scrutinizer ignore-unhandled */ @apache_setenv($envkey, $envvalue, false);
                 }
 
             }
@@ -94,7 +91,7 @@ abstract class Envabstract
         }
 
         if (empty($this->parser->arr->getArrayCopy())) {
-            return null;
+            return $this->parsercollector;
         }
 
         foreach ($this->parser->arr->getArrayCopy() as $key => $line) {

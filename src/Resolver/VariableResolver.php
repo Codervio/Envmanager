@@ -23,9 +23,20 @@ class VariableResolver
                     $origin = $match[0];
                     $nameVar = $match[1];
 
-                    if (getenv($nameVar)) {
+                    if (!getenv($nameVar)) {
+                        // skip
+                    }
 
+                    if ($arr = is_array(getenv($nameVar))) {
+                        foreach ($arr as $envValue) {
+                            $value = str_replace($origin, $envValue, $value);
+                        }
+
+                    } elseif (getenv($nameVar)) {
                         $value = str_replace($origin, getenv($nameVar), $value);
+
+                    } else {
+                        return $value;
 
                     }
                 }

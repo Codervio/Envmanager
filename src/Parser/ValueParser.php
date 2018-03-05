@@ -6,7 +6,7 @@ class ValueParser
 {
     public function parse($input, $strict)
     {
-        $input = $this->parseEmpty($input, $strict);
+        $input = $this->parseEmpty($input);
         $input = $this->parseFloat($input);
         $input = $this->parseNumeric($input);
         $input = $this->parseBool($input, $strict);

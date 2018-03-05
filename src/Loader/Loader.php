@@ -18,11 +18,6 @@ class Loader
         $this->extension = $extension;
     }
 
-    private function checkExtension()
-    {
-        //todo
-    }
-
     public function getLoadStatus()
     {
         return !empty($this->filepath);
@@ -41,14 +36,14 @@ class Loader
 
         $path = glob($this->filepath);
 
-        if (!is_array($path)) {
+        if (empty($path) || !$path) {
             $this->isloaded = false;
             return false;
         }
 
-        foreach ($path as $file)
+        foreach ($path as $filemain)
         {
-            $fileInfo = pathinfo($file);
+            $fileInfo = pathinfo($filemain);
 
             $pathInfo = $fileInfo['dirname'].DIRECTORY_SEPARATOR.$fileInfo['basename'];
 

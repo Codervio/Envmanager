@@ -4,7 +4,6 @@ namespace Codervio\Envmanager\Resolver;
 
 interface ValueResolverInterface
 {
-    const INVALID_PREG = '/(^(\')+[a-z]+$)|(^[a-z]+(\')$)|(^(\")+[a-z]+$)|(^[a-z]+(\")$)/u';
     const CLOSERS =  '/^[\'"](.*)[\'"]/i';
     const CLOSURE_MATCH = '/\"(.*)\s+(.*)\"/i';
 

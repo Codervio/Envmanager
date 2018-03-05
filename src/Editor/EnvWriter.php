@@ -13,6 +13,8 @@ class EnvWriter
 
     protected $forceclear = false;
 
+    private $formatter;
+
     public function __construct()
     {
         $this->arr = new ArrayStore();
@@ -30,6 +32,10 @@ class EnvWriter
 
     public function clearBuffer()
     {
+        if (empty($this->arr->getArrayCopy())) {
+            return;
+        }
+
         if (is_array($this->arr->getArrayCopy())) {
             foreach ($this->arr->getArrayCopy() as $index => $value) {
                 $this->arr->offsetUnset($index);
@@ -77,9 +83,7 @@ class EnvWriter
     {
         $packArray = compact('key', 'value', 'comment', 'export');
 
-        $result = $this->formatter->setKeys($packArray);
-
-        $this->arr->offsetSet($key, $result);
+        $this->arr->offsetSet($key, $this->formatter->setKeys($packArray));
     }
 
     public function appendComment($comment)

@@ -34,6 +34,8 @@ class Parser
                 $this->cleanLine($key, $val);
 
             }
+        } else {
+            return;
         }
     }
 

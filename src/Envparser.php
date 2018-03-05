@@ -34,6 +34,8 @@ class Envparser extends Envabstract
     protected $override = false;
 
     protected $systemparser = array();
+    protected $keyresolver;
+    protected $parser;
 
     private $result;
 
@@ -107,7 +109,7 @@ class Envparser extends Envabstract
         if (ini_get('variables_order') === '' || strpos(ini_get('variables_order'), 'G')) {
             return true;
         } else {
-            throw new RuntimeException('Warning: Set and create globals for $_ENV is disabled. To enable globally, for console run: \'php -d variables_order=EGPCS php.php\' or set in php.ini directive: variables_order=EGPCS');
+            throw new \RuntimeException('Warning: Set and create globals for $_ENV is disabled. To enable globally, for console run: \'php -d variables_order=EGPCS php.php\' or set in php.ini directive: variables_order=EGPCS');
         }
     }
 
