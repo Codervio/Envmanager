@@ -27,8 +27,8 @@ class VariableResolver
                         // skip
                     }
 
-                    if ($arr = is_array(getenv($nameVar))) {
-                        foreach ($arr as $envValue) {
+                    if (is_array(getenv($nameVar))) {
+                        foreach (getenv($nameVar) as $envValue) {
                             $value = str_replace($origin, $envValue, $value);
                         }
 

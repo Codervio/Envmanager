@@ -17,7 +17,7 @@ class EnveditorTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->tmpPathEnv = sys_get_temp_dir() . self::DS . 'EnveditorTestEnv.env';
+        $this->tmpPathEnv = sys_get_temp_dir() . self::DS .'EnveditorTestEnv.env';
 
         if (!touch($this->tmpPathEnv)) {
             throw new \RuntimeException(sprintf('A test failed. Could not write a file to "%s" path', $this->tmpPathEnv));

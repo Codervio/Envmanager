@@ -36,7 +36,7 @@ class Loader
 
         $path = glob($this->filepath);
 
-        if (empty($path) || !$path) {
+        if (!$path) {
             $this->isloaded = false;
             return false;
         }
