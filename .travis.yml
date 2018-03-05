@@ -10,7 +10,7 @@ branches:
 
 before_script:
   - composer self-update
-  - composer update --prefer-source --prefer-lowest
+  - composer update --prefer-source --prefer-lowest --dev
 
 after_script:
   - cd vendor/codervio/envmanager
