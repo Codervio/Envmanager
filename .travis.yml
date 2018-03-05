@@ -1,20 +1,16 @@
-sudo: false
-
 language: php
+
+sudo: false
 
 php:
     - 7.1
-    - 7.2
-
-install:
-  - travis_retry composer install --no-interaction --no-suggest
-  - composer show --installed
 
 branches:
   only: master
 
 before_script:
-  - travis_retry composer self-update
+  - composer self-update
+  - composer update --prefer-source --prefer-lowest
 
 after_script:
   - cd vendor/codervio/envmanager
