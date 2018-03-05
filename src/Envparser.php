@@ -33,10 +33,7 @@ class Envparser extends Envabstract
     protected $processEnv = true;
     protected $override = false;
 
-    protected $parsedsystemvars = array();
     protected $systemparser = array();
-    protected $fileEncoding;
-    protected $commentResolver = array();
 
     private $result;
 

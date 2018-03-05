@@ -2,7 +2,7 @@
     "name": "codervio/envmanager",
     "type": "library",
     "description": "Codervio Environment manager",
-    "keywords": ["dotenv", "env", "environment", "php", ".env", "php", "dotenv-editor", "parser", "config", "framework", "loader", "array-env", "dev-tools", "dot-env"],
+    "keywords": ["dotenv", "env", "environment", "php", ".env", "php", "dotenv-editor", "parser", "config", "framework", "loader", "array-env", "dev-tools"],
     "homepage": "http://codervio.com",
     "license": "MIT",
     "authors": [

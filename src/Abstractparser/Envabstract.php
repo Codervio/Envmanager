@@ -3,9 +3,14 @@
 namespace Codervio\Envmanager\Abstractparser;
 
 use Codervio\Envmanager\Parser\ParserCollector;
+use Exception;
 
 abstract class Envabstract
 {
+    protected $fileEncoding;
+    protected $parsedsystemvars = array();
+    protected $commentResolver = array();
+
     protected function parseEncoding($data)
     {
         if (empty($this->fileEncoding)) {
@@ -59,6 +64,7 @@ abstract class Envabstract
 
                 if (function_exists('apache_getenv')) {
                     if (!apache_getenv($envkey, false)) {
+                        /** @scrutinizer ignore-unhandled */
                         @apache_setenv($envkey, $envvalue, false);
                     }
                 }
@@ -72,6 +78,7 @@ abstract class Envabstract
 
                 $_SERVER[$envkey] = $envvalue;
                 if (function_exists('apache_setenv')) {
+                    /** @scrutinizer ignore-unhandled */
                     @apache_setenv($envkey, $envvalue, false);
                 }
 
@@ -83,10 +90,12 @@ abstract class Envabstract
     {
         foreach (getenv() as $key => $value)
         {
-            $parsedsysvars = $this->parsercollector->offsetSet($key, $value);
+            $this->parsedsystemvars = $this->parsercollector->offsetSet($key, $value);
         }
 
-        $this->parsedsystemvars = $parsedsysvars;
+        if (empty($this->parser->arr->getArrayCopy())) {
+            return null;
+        }
 
         foreach ($this->parser->arr->getArrayCopy() as $key => $line) {
 
