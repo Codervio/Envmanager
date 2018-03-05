@@ -1,4 +1,4 @@
-# Environment manager
+# Environment manager (dotenv)
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/codervio/envmanager.svg?style=flat-square)](https://packagist.org/packages/codervio/envmanager)
 [![Build Status](https://travis-ci.org/codervio/envmanager.svg?branch=master)](https://travis-ci.org/codervio/envmanager)
