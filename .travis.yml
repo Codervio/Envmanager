@@ -9,7 +9,8 @@ before_script:
     - travis_retry composer self-update
     - travis_retry composer install --no-interaction --prefer-source --dev
 
-script:
-    - vendor/bin/phpunit --coverage-clover=coverage.xml
+after_script:
+    - cd vendor/codervio/envmanager
+    - phpunit Tests/ --coverage-clover=coverage.xml
 
 
