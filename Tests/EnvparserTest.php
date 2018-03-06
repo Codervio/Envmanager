@@ -1,22 +1,18 @@
 <?php
 
-namespace Codervio\Http\Tests;
+namespace Codervio\Envmanager\Tests;
 
 use Codervio\Envmanager\Envparser;
 use Codervio\Envmanager\Exceptions\ValueException;
 use Codervio\Envmanager\Exceptions\ParseException;
 use Codervio\Envmanager\Exceptions\ValidationException;
-
-if (!class_exists('\PHPUnit\Framework\TestCase') &&
-    class_exists('\PHPUnit_Framework_TestCase')) {
-    class_alias('\PHPUnit_Framework_TestCase', '\PHPUnit\Framework\TestCase');
-}
+use PHPUnit\Framework\TestCase;
 
 /**
  * Envparser unit test
  * 
  */
-class EnvparserTest extends \PHPUnit_Framework_TestCase
+class EnvparserTest extends TestCase
 {
     public $tmpPathEnv;
     public $instance;

@@ -1,19 +1,15 @@
 <?php
 
-namespace Codervio\Http\Tests;
+namespace Codervio\Envmanager\Tests;
 
 use Codervio\Envmanager\Enveditor;
-
-if (!class_exists('\PHPUnit\Framework\TestCase') &&
-    class_exists('\PHPUnit_Framework_TestCase')) {
-    class_alias('\PHPUnit_Framework_TestCase', '\PHPUnit\Framework\TestCase');
-}
+use PHPUnit\Framework\TestCase;
 
 /**
  * Envparser unit test
  *
  */
-class EnveditorTest extends \PHPUnit_Framework_TestCase
+class EnveditorTest extends TestCase
 {
     public $tmpPathEnv;
     public $instance;
