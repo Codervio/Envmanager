@@ -22,6 +22,7 @@ before_script:
 
 after_script:
   - ls
-  - vendor/codervio/envmanager/phpunit Tests/ --coverage-clover=coverage.xml
+  - cd vendor/codervio/envmanager
+  - phpunit Tests/ --coverage-clover=coverage.xml
 
 
