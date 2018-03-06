@@ -3,7 +3,6 @@ language: php
 sudo: false
 
 env:
-  - SH=bash
   - CODERVIO_PACKAGE="envmanager"
 
 php:
@@ -14,6 +13,7 @@ branches:
   only: master
 
 before_script:
+  - export ENVVARTEST=ENVVALTEST
   - composer self-update
   - composer update --prefer-source --prefer-lowest --dev
 
