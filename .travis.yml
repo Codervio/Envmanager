@@ -22,7 +22,7 @@ before_script:
 
 after_script:
   - ls
-  - cd vendor/codervio/envmanager
+  - cd /home/travis/build/Codervio/Envmanager
   - phpunit Tests/ --coverage-clover=coverage.xml
 
 
