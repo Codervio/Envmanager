@@ -14,6 +14,6 @@ before_script:
   - composer update --prefer-source --prefer-lowest --dev
 
 after_script:
-  - vendor/codervio/envmanager/vendor/phpunit/phpunit/phpunit vendor/codervio/envmanager/Tests/ --coverage-clover=coverage.xml
+  - $TRAVIS_BUILD_DIR/vendor/bin/phpunit vendor/codervio/envmanager/Tests/ --coverage-clover=coverage.xml
 
 
