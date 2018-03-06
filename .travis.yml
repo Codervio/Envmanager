@@ -18,6 +18,8 @@ after_script:
   - ls vendor
   - ls vendor/codervio/envmanager
   - ls vendor/bin/
-  - $TRAVIS_BUILD_DIR/vendor/bin/phpunit vendor/codervio/envmanager/Tests/EnvparserTest.php --coverage-clover=coverage.xml
+  - ls $TRAVIS_BUILD_DIR/Tests
+  - ls $TRAVIS_BUILD_DIR/vendor/bin/phpunit
+  - $TRAVIS_BUILD_DIR/vendor/bin/phpunit $TRAVIS_BUILD_DIR/Tests/EnvparserTest.php --coverage-clover=coverage.xml
 
 
