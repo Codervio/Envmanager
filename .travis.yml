@@ -13,11 +13,12 @@ branches:
   only: master
 
 before_script:
-  - export ENVVARTEST=ENVVALTEST
+  - export CODERVIOVAR='CODERVIOVALUE'
   - composer self-update
   - composer update --prefer-source --prefer-lowest --dev
 
 after_script:
+  - export CODERVIOVAR='CODERVIOVALUE'
   - ls $TRAVIS_BUILD_DIR
   - ls $TRAVIS_BUILD_DIR/Tests
   - ls $TRAVIS_BUILD_DIR/vendor/bin/phpunit
