@@ -2,6 +2,10 @@ language: php
 
 sudo: false
 
+env:
+  - SH=bash
+  - CODERVIO_PACKAGE="envmanager"
+
 php:
     - 7.0
     - 7.1
@@ -15,9 +19,6 @@ before_script:
 
 after_script:
   - ls $TRAVIS_BUILD_DIR
-  - ls vendor
-  - ls vendor/codervio/envmanager
-  - ls vendor/bin/
   - ls $TRAVIS_BUILD_DIR/Tests
   - ls $TRAVIS_BUILD_DIR/vendor/bin/phpunit
   - $TRAVIS_BUILD_DIR/vendor/bin/phpunit $TRAVIS_BUILD_DIR/Tests/EnvparserTest.php --coverage-clover=coverage.xml
