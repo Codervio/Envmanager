@@ -21,7 +21,7 @@ class SystemParser
             return getenv();
         }
 
-        if (!is_array($_ENV)) {
+        if (is_array($_ENV)) {
             return $_ENV;
         }
     }
