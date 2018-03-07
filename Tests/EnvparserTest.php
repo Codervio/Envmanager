@@ -241,9 +241,9 @@ EOF;
 
         $systemvars = $envparser->getSystemVars();
 
-        $this->assertSame($systemvars['USERNAME'], $_ENV['USERNAME']);
-        $this->assertSame($envparser->getSystemVars('USERNAME'), $_ENV['USERNAME']);
-        $this->assertTrue($envparser->checkSystemVar('USERNAME'));
+        $this->assertSame($systemvars['PWD'], $_ENV['PWD']);
+        $this->assertSame($envparser->getSystemVars('PWD'), $_ENV['PWD']);
+        $this->assertTrue($envparser->checkSystemVar('PWD'));
     }
 
     public function testStrictBool()

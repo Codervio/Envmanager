@@ -2,7 +2,7 @@
     "name": "codervio/envmanager",
     "type": "library",
     "description": "Codervio Environment manager",
-    "keywords": ["dotenv", "env", "environment", "php", ".env", "php", "dotenv-editor", "parser", "config", "framework", "loader", "array-env", "dev-tools"],
+    "keywords": ["dotenv", "env", "environment", "php", ".env", "php", "dotenv-editor", "parser", "config", "framework", "loader", "array-env", "dev-tools", "dot-env"],
     "homepage": "http://codervio.com",
     "license": "MIT",
     "authors": [
@@ -19,10 +19,7 @@
         "php": "^7.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.0"
-    },
-    "scripts": {
-        "test": "./vendor/bin/phpunit"
+        "phpunit/phpunit": "6.0.*"
     },
     "autoload": {
         "psr-4": {
