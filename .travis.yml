@@ -9,18 +9,12 @@ branches:
   only: master
 
 before_script:
-  - export USERNAME='USERNAMETEST'
-  - composer self-update
-  - composer update --prefer-source --prefer-lowest --dev
+  - composer install
 
 after_script:
-  - export USERNAME=USERNAMETEST
-  - echo $USERNAME
-  - printenv
   - ls $TRAVIS_BUILD_DIR
   - ls $TRAVIS_BUILD_DIR/Tests
   - ls $TRAVIS_BUILD_DIR/vendor/bin/phpunit
-  - php -i "var_dump($_ENV)"
   - $TRAVIS_BUILD_DIR/vendor/bin/phpunit $TRAVIS_BUILD_DIR/Tests/EnvparserTest.php --coverage-clover=coverage.xml
 
 
