@@ -236,10 +236,20 @@ EOF;
     public function testGetSystemVars()
     {
         $envparser = new Envparser();
-        $envparser->load();
+        $envparser->load(true, true);
         $envparser->run();
 
         $systemvars = $envparser->getSystemVars();
+
+        var_dump('0');
+        var_dump($systemvars);
+        var_dump('1');
+        var_dump($systemvars['PWD']);
+        var_dump('2');
+        var_dump($_ENV['PWD']);
+        var_dump('3');
+        $env = getenv();
+        var_dump($env['PWD']);
 
         $this->assertSame($systemvars['PWD'], $_ENV['PWD']);
         $this->assertSame($envparser->getSystemVars('PWD'), $_ENV['PWD']);
