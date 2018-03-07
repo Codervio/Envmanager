@@ -2,19 +2,27 @@ language: php
 
 sudo: false
 
+env:
+  global:
+    - DEFAULT_COMPOSER_FLAGS="--no-interaction --no-ansi --no-progress --no-suggest"
+
+before_install:
+    - ./build/tools/composer clear-cache
+
 php:
     - 7.1
 
 branches:
   only: master
 
-before_script:
-  - composer install
+install:
+  - travis_retry composer update --prefer-dist --prefer-stable
 
-after_script:
+script:
   - ls $TRAVIS_BUILD_DIR
   - ls $TRAVIS_BUILD_DIR/Tests
   - ls $TRAVIS_BUILD_DIR/vendor/bin/phpunit
   - $TRAVIS_BUILD_DIR/vendor/bin/phpunit $TRAVIS_BUILD_DIR/Tests/EnvparserTest.php --coverage-clover=coverage.xml
 
-
+notifications:
+  email: false
