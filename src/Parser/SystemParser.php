@@ -17,16 +17,16 @@ class SystemParser
 
     public function parse()
     {
+        if (!empty($_ENV)) {
+            return $_ENV;
+        }
+
         if (function_exists('getenv')) {
             return getenv();
         }
-
-        if (is_array($_ENV)) {
-            return $_ENV;
-        }
     }
 
-    public function getValues($variable = null)
+    public static function getValues($variable = null)
     {
         if (!is_null($variable)) {
             if (isset(self::$sysvar[$variable])) {
@@ -36,15 +36,20 @@ class SystemParser
             }
         }
 
-        return self::$sysvar;
+        return static::getAllEnvVariables();
     }
 
-    public function checkValue($variable)
+    public static function checkValue($variable)
     {
         if (isset(self::$sysvar[$variable])) {
             return true;
         }
 
         return false;
+    }
+
+    private static function getAllEnvVariables()
+    {
+        return static::$sysvar;
     }
 }

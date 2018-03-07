@@ -150,7 +150,8 @@ class Envparser extends Envabstract
 
     public function getSystemVars($variable = null)
     {
-        return $this->systemparser->getValues($variable);
+        $systemparse = $this->systemparser;
+        return $systemparse::getValues($variable);
     }
 
     public function run()
