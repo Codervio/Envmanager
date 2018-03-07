@@ -7,7 +7,7 @@ env:
     - DEFAULT_COMPOSER_FLAGS="--no-interaction --no-ansi --no-progress --no-suggest"
 
 before_install:
-    - ./build/tools/composer clear-cache
+    - composer clear-cache
 
 php:
     - 7.1
