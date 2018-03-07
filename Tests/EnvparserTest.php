@@ -241,18 +241,8 @@ EOF;
 
         $systemvars = $envparser->getSystemVars();
 
-        var_dump('0');
-        var_dump($systemvars);
-        var_dump('1');
-        var_dump($systemvars['PWD']);
-        var_dump('2');
-        var_dump($_ENV['PWD']);
-        var_dump('3');
-        $env = getenv();
-        var_dump($env['PWD']);
-
-        $this->assertSame($systemvars['PWD'], $_ENV['PWD']);
-        $this->assertSame($envparser->getSystemVars('PWD'), $_ENV['PWD']);
+        $this->assertSame($systemvars['PWD'], getenv('PWD'));
+        $this->assertSame($envparser->getSystemVars('PWD'), getenv('PWD'));
         $this->assertTrue($envparser->checkSystemVar('PWD'));
     }
 

@@ -11,18 +11,18 @@ class SystemParser
     {
         if (!self::$isCalled) {
             self::$isCalled = true;
-            self::$sysvar = $this->parse();
+            self::$sysvar = static::parse();
         }
     }
 
-    public function parse()
+    public static function parse()
     {
-        if (!empty($_ENV)) {
-            return $_ENV;
-        }
-
         if (function_exists('getenv')) {
             return getenv();
+        }
+
+        if (!empty($_ENV)) {
+            return $_ENV;
         }
     }
 

@@ -47,18 +47,14 @@ abstract class Envabstract
 
             if (!$this->override) {
 
-                if (!isset($_ENV[$envkey])) {
-                    $_ENV[$envkey] = $envvalue;
-                }
-
                 if (function_exists('getenv')) {
                     if (!getenv($envkey, false)) {
                         putenv("$envkey=$envvalue");
                     }
                 }
 
-                if (!isset($_SERVER[$envkey])) {
-                    $_SERVER[$envkey] = $envvalue;
+                if (!isset($_ENV[$envkey])) {
+                    $_ENV[$envkey] = $envvalue;
                 }
 
                 if (function_exists('apache_getenv')) {
@@ -67,12 +63,17 @@ abstract class Envabstract
                     }
                 }
 
+                if (!isset($_SERVER[$envkey])) {
+                    $_SERVER[$envkey] = $envvalue;
+                }
+
             } else {
 
-                $_ENV[$envkey] = $envvalue;
                 if (function_exists('putenv')) {
                     putenv("$envkey=$envvalue");
                 }
+
+                $_ENV[$envkey] = $envvalue;
 
                 $_SERVER[$envkey] = $envvalue;
                 if (function_exists('apache_setenv')) {
