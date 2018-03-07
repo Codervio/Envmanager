@@ -1,7 +1,7 @@
 # Environment manager
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/codervio/envmanager.svg?style=flat-square)](https://packagist.org/packages/codervio/envmanager)
-[![Build Status](https://travis-ci.org/codervio/envmanager.svg?branch=master)](https://travis-ci.org/codervio/envmanager)
+[![Build Status](https://travis-ci.org/Codervio/Envmanager.svg?branch=master)](https://travis-ci.org/Codervio/Envmanager)
 [![Total Downloads](https://img.shields.io/scrutinizer/g/codervio/envmanager.svg?style=flat-square)](https://scrutinizer-ci.com/g/Codervio/Envmanager/?branch=master)
 
 The `Environment manager` parses, populates dot environment variables from env files to super global $_ENV variable, apache and getenv function.
