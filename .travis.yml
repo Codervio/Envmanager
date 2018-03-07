@@ -11,7 +11,7 @@ branches:
 before_script:
   - export USERNAME='USERNAMETEST'
   - composer self-update
-#  - composer update --prefer-source --prefer-lowest --dev
+  - composer update --prefer-source --prefer-lowest --dev
 
 after_script:
   - export USERNAME='USERNAMETEST'
