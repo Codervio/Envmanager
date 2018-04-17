@@ -1,5 +1,7 @@
 # Environment manager
 
+[![Join the chat at https://gitter.im/Codervio/Envmanager](https://badges.gitter.im/Codervio/Envmanager.svg)](https://gitter.im/Codervio/Envmanager?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/codervio/envmanager.svg?style=flat-square)](https://packagist.org/packages/codervio/envmanager)
 [![Build Status](https://travis-ci.org/Codervio/Envmanager.svg?branch=master)](https://travis-ci.org/Codervio/Envmanager)
 [![Total Downloads](https://img.shields.io/scrutinizer/g/codervio/envmanager.svg?style=flat-square)](https://scrutinizer-ci.com/g/Codervio/Envmanager/?branch=master)
