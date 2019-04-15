@@ -13,6 +13,12 @@ It provides for editing environment file and manipulate them.
 
 ![Screenshot](https://github.com/Codervio/Envmanager/raw/master/screenshot.png "Screenshot")
 
+## Donations
+
+Due I am working 100% alone without any helps, organizations and any others team I can be satisfy for receiving any amount of payment to improve, develop and continue building on origin idea of framework.
+
+You can pay any amount to PayPal: https://www.paypal.me/codervio?locale.x=en_US
+
 ## Installation
 
 1. Installation via [Composer](http://www.composer.org) on [Packagist](https://packagist.org/packages/codervio/envmanager)
